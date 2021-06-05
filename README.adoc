@@ -1,0 +1,68 @@
+= TTGO LoRa Temperature Sensor
+
+This example uses a TTGO LoRa32 V1 board with a Semtech SX1276 LoRa transceiver
+and an onboard OLED display to demonstrate how to connect a DHT22 temperature
+and relative humidity sensor to a LoRaWAN network (The Things Network, for example).
+
+image::./doc/setup_overview.jpg[Setup overwview]
+
+== Setup
+
+=== DHT22 and LoRa antenna
+
+* The signal pin of the DHT22 must be connect to pin 13. 
+    This pin can be changed by adjusting the value of the macro `DHTPIN`.
+* The VDD pin of the DHT22 must be connected to 3.3V power supply (the pin named "3.3").
+* The GND pin of the DHT22 must be connected to the GND on the board.
+
+WARNING: Make sure that the LoRa antenna is connected to the board before powering it on.
+The board can be damaged if the antenna is not connected when powered on!
+
+=== PlatformIO and Visual Studio Code
+
+This project uses https://platformio.org/[PlatformIO] as development environment. It is available
+as a https://platformio.org/platformio-ide[extension for Visual Studio Code].
+
+Open the project folder in Visual Studio Code with an activated PlatformIO extension
+and you should be able to build and flash the project onto a connected TTGO LoRa32 board.
+
+=== Configuration
+
+Copy the file `include/config_template.h` to `include/config.h`.
+Adjust the values for APPEUI, DEVEUI, and APPKEY according to the settings required for your 
+LoRaWAN network (e.g. the values provided by The Things Network). Note that the order/endianess of the
+bytes is important (little and big endian).
+
+== Display
+
+The display shows status information about the current state of the LoRa stack.
+
+On the left, it shows the current state (transmitting, idling, ...) below the heading.
+Below that, the current temperature and humidity are shown.
+
+On the right, different statsu information about the current LoRa connection are shown. For details
+refere to the following table.
+
+.Status information on display
+|====
+| T: | Temperature in degree Celsius
+| H: | Relative humidity in %
+| ADR | If on, the _adaptive data rate_ (ADR) is switched on, else off
+| DR | _Data rate_, between 0 (slowest, most reliable) and 6 (fastest, least reliable); valid for EU868
+| SF | _Spread factor_, between 7 (least spread, faster transmission) and 12 (widest spread, slower transmission)
+| BW | _Band width_ in kHz, either 125kHz or 250 kHz
+| TC | _Transmit counter_, number of messages transmitted
+| RC | _Receive counter_, number of messages received
+| R | _Received signal strength indicator_ (RSSI), indicates the signal strength of a received messages; the higher the better
+| S | _Signal to noise ratio_ (SNR) in dB, the higher the value, the better the signal can be differentiated from the noise
+
+|====
+
+== Links
+
+* https://learn.adafruit.com/the-things-network-for-feather/arduino-setup[Tutorial by Adafruit]
+* https://randomnerdtutorials.com/ttgo-lora32-sx1276-arduino-ide/[Tutorial by randomnerdtutorials]
+
+* https://github.com/mcci-catena/arduino-lmic[Github repository Arduino LMIC]
+* https://github.com/mcci-catena/arduino-lmic/tree/master/doc[Documentation for Arduino LMIC (with LoRa general docs)]
+
